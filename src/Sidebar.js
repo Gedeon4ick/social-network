@@ -1,7 +1,8 @@
 import { Chat, DonutLargeOutlined, MoreVert, SearchOutlined } from '@mui/icons-material';
 import { Avatar, IconButton } from '@mui/material';
 import React from 'react';
-import './Sidebar.css'
+import './sidebar.css'
+import SidebarChat from './SidebarChat';
 
 const Sidebar = () => {
     return (
@@ -27,7 +28,11 @@ const Sidebar = () => {
                 </div>
                </div>
             <div className="sidebar__chats">
-
+                <SidebarChat addNewChat/>
+                <SidebarChat />
+                <SidebarChat />
+                <SidebarChat />
+               
             </div>
         </div>
     );
