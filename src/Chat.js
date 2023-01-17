@@ -1,14 +1,22 @@
-import { AttachFile, MoreVert, SearchOutlined } from '@mui/icons-material';
+import { AttachFile, InsertEmoticon, MoreVert, SearchOutlined } from '@mui/icons-material';
+import MicOutlinedIcon from '@mui/icons-material/MicOutlined';
 import { Avatar, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import "./chat.css"
 
 const Chat = () => {
+    const [input, setInput] = useState("");
     const [seed, setSeed] = useState("");
 
     useEffect(() => {
         setSeed(Math.floor(Math.random() * 5000));
     }, []);
+
+    const sendMessage = (e) => {
+        e.preventDefault();
+        console.log(input);
+        setInput("")
+    }
 
     return (
         <div className='chat'>
@@ -30,11 +38,22 @@ const Chat = () => {
                     </IconButton>
                 </div>
             </div>
-            <div className="chatbody">
-
+            <div className="chat__body">
+                <p className={`chat__message ${true && 'chat__reciever'}`}>
+                    <span className="chat__name">Sony Sangha</span>
+                    Hey Guys
+                    <span className='chat__timestamp'>3:52pm</span>
+                </p>
             </div>
 
-            <div className="chat__footer"></div>
+            <div className="chat__footer">
+                <InsertEmoticon />
+                <form>
+                    <input value={input} onChange={e => setInput(e.target.value)} type="text" placeholder="Send a message"/>
+                <button onClick={sendMessage } type="submit" >Send a message</button>
+                </form>
+                <MicOutlinedIcon /> 
+            </div>
         </div>
     );
 };
