@@ -5,8 +5,11 @@ import {  query, onSnapshot,collection } from "firebase/firestore";
 import './sidebar.css'
 import SidebarChat from './SidebarChat';
 import db from "./firebase";
+import { useStateValue } from "./StateProvider";
 
 const Sidebar = () => {
+    const [{ user }, dispatch] = useStateValue();
+    console.log(user);
     const [rooms, setRooms] = useState([]);
         useEffect(() => {
             const q = query(collection(db, "rooms"))
@@ -24,7 +27,8 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <div className="sidebar__header">
-                <Avatar/>
+                <Avatar src={user.photoURL}/>
+                <p>{user?.displayName}</p>
                 <div className="sidebar__headerRight">
                     <IconButton>
                         <DonutLargeOutlined/>
