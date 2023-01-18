@@ -13,7 +13,7 @@ function App() {
             <Route exact path="/" element={<Sidebar/>}/>
           </Routes>
           <Routes>
-            <Route path="/app" element={<><Sidebar/><Chat/></>}/>
+            <Route path="/rooms/:roomId" element={<><Sidebar/><Chat/></>}/>
           </Routes>
         </BrowserRouter>
       </div>
