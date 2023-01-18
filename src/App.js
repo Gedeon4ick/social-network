@@ -1,3 +1,5 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Sidebar from './Sidebar';
 import Chat from './Chat';
@@ -6,8 +8,14 @@ function App() {
   return (
     <div className="app">
       <div className="app__body">
-          <Sidebar/> 
-          <Chat />
+        <BrowserRouter>
+          <Routes>
+            <Route exact path="/" element={<Sidebar/>}/>
+          </Routes>
+          <Routes>
+            <Route path="/app" element={<><Sidebar/><Chat/></>}/>
+          </Routes>
+        </BrowserRouter>
       </div>
     </div>
   );
