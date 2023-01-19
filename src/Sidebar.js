@@ -9,7 +9,6 @@ import { useStateValue } from "./StateProvider";
 
 const Sidebar = () => {
     const [{ user }, dispatch] = useStateValue();
-    console.log(user);
     const [rooms, setRooms] = useState([]);
         useEffect(() => {
             const q = query(collection(db, "rooms"))
@@ -20,7 +19,7 @@ const Sidebar = () => {
                         data: doc.data() 
                     }
                 }))
-        });
+            });
  
     }, []);
 
