@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import "./chat.css"
 import { useParams } from 'react-router-dom'; 
 import db from './firebase';
-import {  doc, onSnapshot, collection, setDoc, Timestamp } from "firebase/firestore";
+import {  doc, onSnapshot, collection, setDoc, orderBy, query } from "firebase/firestore";
 import { useStateValue } from './StateProvider';
 
 
@@ -41,7 +41,6 @@ const Chat = () => {
         e.preventDefault();
         
         const messageRef = collection(db, "rooms", roomId, "messages");
-        console.log(messageRef);
         setDoc(doc(messageRef), {
             message: input,
             name: user.displayName,
@@ -57,7 +56,11 @@ const Chat = () => {
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
                 <div className="chat__headerInfo">
                     <h3>{roomName}</h3>
-                    <p>Last seen at ...</p>
+                    <p>
+                        last seen{" "}
+                        {new Date(
+                            messages[messages.length - 1]?.timestamp.toDate()).toUTCString()}
+                    </p>
                 </div>
                 <div className="chat__headerRight">
                     <IconButton>
@@ -73,7 +76,7 @@ const Chat = () => {
             </div>
             <div className="chat__body">
                 {messages.map((message) => (
-                    <p key={message.timestamp.nanoseconds} className={`chat__message ${true && 'chat__reciever'}`}>
+                    <p key={message.timestamp.nanoseconds} className={`chat__message ${ message.name === user.displayName && 'chat__reciever'}`}>
                         <span className="chat__name">{message.name}</span>
                         {message.message}
                         <span className='chat__timestamp'>

@@ -2,9 +2,14 @@ import { Avatar } from '@mui/material';
 import  { React, useEffect, useState } from 'react';
 import './sidebarChat.css';
 import { Link } from 'react-router-dom';
+import { collection, setDoc } from "firebase/firestore";
+import db from './firebase';
+import { useParams } from 'react-router-dom'; 
+
 
 const SidebarChat  = ({id, name, addNewChat}) => {
     const [seed, setSeed] = useState("");
+    const {roomId} = useParams();
 
     useEffect(() => {
         setSeed(Math.floor(Math.random() * 5000));
@@ -14,6 +19,10 @@ const SidebarChat  = ({id, name, addNewChat}) => {
         const roomName = prompt("Please enter name for chat");
         if (roomName) {
             // do some clever detabase stuff...
+            const messageRef = collection(db, "rooms");
+            setDoc(collection(messageRef), {
+                name: roomName
+            })
         }
 
     };
