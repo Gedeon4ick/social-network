@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import "./chat.css"
 import { useParams } from 'react-router-dom'; 
 import db from './firebase';
-import {  doc, onSnapshot, collection, setDoc, orderBy, query } from "firebase/firestore";
+import {  doc, onSnapshot, collection, setDoc, orderBy, query, getDocs } from "firebase/firestore";
 import { useStateValue } from './StateProvider';
 
 
@@ -17,6 +17,7 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     
     const [{user}, dispatch] = useStateValue();
+
     
     useEffect(() => {
         if (roomId) {
@@ -24,11 +25,10 @@ const Chat = () => {
                 setRoomName(doc.data().name)
             });
             const messageRef = collection(db, "rooms", roomId, "messages");
-
-            onSnapshot(messageRef, (snapshot) => {
-                setMessages(snapshot.docs.map((doc) => {
-                    return doc.data()
-                }))
+            const q = query(messageRef, orderBy("timestamp", "asc"));
+    
+            onSnapshot(q, (querySnapshot) => {
+                setMessages(querySnapshot.docs.map((doc) => doc.data()))
             })
         }
     }, [roomId])
@@ -41,6 +41,7 @@ const Chat = () => {
         e.preventDefault();
         
         const messageRef = collection(db, "rooms", roomId, "messages");
+
         setDoc(doc(messageRef), {
             message: input,
             name: user.displayName,
